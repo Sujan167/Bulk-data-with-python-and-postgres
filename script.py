@@ -12,11 +12,11 @@ secondary_file = 'FilterData.json'
 tableName = 'Test_Table'
 
 # This is for database connection.
-host = '192.168.18.254'
-port = '5432'
-user = 'postgres'
-password = 'changeme'
-dbname = 'postgres'
+host = ''
+port = ''
+user = ''
+password = ''
+dbname = ''
 
 
 def fetchData():
