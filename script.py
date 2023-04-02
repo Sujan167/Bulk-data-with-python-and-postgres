@@ -6,10 +6,17 @@ import psycopg2
 import json
 
 # primary_file is the source file where all data is available.
-# As data may be bulk and low spec RAM may not handle it thus a secondary file is used. clean data is stored in this file where we can directly insert into database
+# As data may be bulk and low spec RAM may not handle it thus a secondary file is used. clean data is stored in this file from where data can be directly inserted into database
 primary_file = 'sampleData.json'
 secondary_file = 'FilterData.json'
 tableName = 'Test_Table'
+
+# This is for database connection.
+host = '192.168.18.254'
+port = '5432'
+user = 'postgres'
+password = 'changeme'
+dbname = 'postgres'
 
 
 def fetchData():
@@ -80,11 +87,11 @@ def dataMapping():
     # fill the host,port,user,password,dbname of your postgres database as shown in example below
     try:
         conn = psycopg2.connect(
-            host='192.168.18.254',
-            port='5432',
-            user='postgres',
-            password='changeme',
-            dbname='postgres'
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            dbname=dbname
         )
 
         # After inserting data, it needs to be commit the change in database thus autocommit=True means it automatically does commit
@@ -111,7 +118,7 @@ def dataMapping():
             )
         ''')
 
-        # Insert data
+        # Schema
         sql = f"INSERT INTO {tableName} (id, name, description,price,brandName,categoryName,imageUrl,createrName,contact,latitude,longitude,locationDescription) VALUES (%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s, %s)"
 
         # read fetched data and then ready to upload.
@@ -119,7 +126,9 @@ def dataMapping():
             content = json.load(f)
 
         final = []
+
         # NOTE: postgres needs a list of tuples. thus converting the data into a list of tuples
+
         for item in content:
             result = tuple(item.values())
             final.append(result)
@@ -142,5 +151,5 @@ if __name__ == '__main__':
     fetchData()
     print("Uploading data in the database.\nPlease wait for a while...")
     dataMapping()
-
+    print("Congratulation, Data Inserted Successfully!")
     os.remove(secondary_file)
