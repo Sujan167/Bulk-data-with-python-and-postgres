@@ -84,7 +84,6 @@ def dataMapping():
     This function is for connection with postgres database. It first establish the connection with database and creates a table, map the data with the schema, read the fetched data from secondary file and upload bulk data into the database
     '''
 
-    # fill the host,port,user,password,dbname of your postgres database as shown in example below
     try:
         conn = psycopg2.connect(
             host=host,
